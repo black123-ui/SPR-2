@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Security</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #000;
+        color: #00ff66;
+        font-family: "Courier New", monospace;
+        overflow: hidden;
+    }
+
+    #screen {
+        min-height: 100vh;
+        padding: 25px;
+    }
+
+    .warning {
+        color: #ff2020;
+        font-size: clamp(25px, 6vw, 55px);
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10vh;
+        animation: blink 0.6s infinite;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .big {
+        font-size: clamp(30px, 8vw, 80px);
+        font-weight: bold;
+    }
+
+    .danger {
+        color: #ff2020;
+    }
+
+    .yellow {
+        color: #ffff00;
+    }
+
+    .cyan {
+        color: #00ffff;
+    }
+
+    .progress {
+        width: 90%;
+        max-width: 700px;
+        height: 30px;
+        border: 2px solid #00ff66;
+        margin: 25px auto;
+    }
+
+    #bar {
+        width: 0%;
+        height: 100%;
+        background: #00ff66;
+    }
+
+    #terminal {
+        height: 55vh;
+        overflow: hidden;
+        font-size: clamp(11px, 2.5vw, 17px);
+        line-height: 1.4;
+    }
+
+    .final {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #000;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .final h1 {
+        color: #00ff66;
+        font-size: clamp(35px, 10vw, 100px);
+        margin: 10px;
+    }
+
+    .final p {
+        color: white;
+        font-size: clamp(18px, 4vw, 30px);
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 0.2;
+        }
+    }
+
+    .shake {
+        animation: shake 0.15s infinite;
+    }
+
+    @keyframes shake {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(3px,-2px); }
+        50% { transform: translate(-3px,2px); }
+        75% { transform: translate(2px,2px); }
+        100% { transform: translate(0,0); }
+    }
+</style>
+</head>
+
+<body>
+
+<div id="screen">
+
+    <div id="intro">
+        <div class="warning">
+            ⚠ SYSTEM WARNING ⚠
+        </div>
+
+        <div class="center">
+            <p class="yellow">UNAUTHORIZED ACCESS DETECTED</p>
+            <p>Security protocol initiated...</p>
+            <p id="loading">Initializing...</p>
+        </div>
+    </div>
+
+    <div id="terminal"></div>
+
+    <div id="attack" class="center" style="display:none;">
+        <p class="danger big">SYSTEM COMPROMISED</p>
+        <p class="yellow">DEVICE SCAN IN PROGRESS...</p>
+
+        <div class="progress">
+            <div id="bar"></div>
+        </div>
+
+        <p id="percent">0%</p>
+    </div>
+
+</div>
+
+<div id="final" class="final">
+    <h1>😂 ŞAKA LAN ŞAKA! 😂</h1>
+    <p>KORKMA! CİHAZINA HİÇBİR ŞEY OLMADI. 😎</p>
+    <p>Bu sadece sahte bir hack ekranıydı.</p>
+</div>
+<p style="
+
+    color: #00ff66 !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    margin-top: 35px !important;
+    text-align: center !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    text-shadow: 0 0 8px #00ff66;
+">
+    By Lütfi Ertan Bozkurt
+</p>
+">
+    By Lütfi Ertan Bozkurt
+</div>
+<script>
+
+const terminal = document.getElementById("terminal");
+const attack = document.getElementById("attack");
+const intro = document.getElementById("intro");
+const bar = document.getElementById("bar");
+const percent = document.getElementById("percent");
+const final = document.getElementById("final");
+
+const chars =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*<>[]{}";
+
+function randomCode(length) {
+    let result = "";
+
+    for (let i = 0; i < length; i++) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    return result;
+}
+
+function addLine(text) {
+    const line = document.createElement("div");
+    line.textContent = text;
+    terminal.appendChild(line);
+
+    if (terminal.children.length > 35) {
+        terminal.removeChild(terminal.firstChild);
+    }
+}
+
+function terminalAnimation() {
+
+    let counter = 0;
+
+    const interval = setInterval(() => {
+
+        const messages = [
+            "[SYSTEM] Scanning device...",
+            "[SECURITY] Firewall bypass attempt...",
+            "[NETWORK] Connection detected...",
+            "[WARNING] Unauthorized process detected!",
+            "[SYSTEM] Analyzing system...",
+            "[ACCESS] Attempting connection...",
+            "[DATA] Encryption protocol initialized...",
+            "[SECURITY] ALERT!",
+            "[PROCESS] Checking system modules...",
+            "[NETWORK] Packet analysis..."
+        ];
+
+        const message =
+            messages[Math.floor(Math.random() * messages.length)];
+
+        addLine(
+            message +
+            " " +
+            randomCode(Math.floor(Math.random() * 30) + 10)
+        );
+
+        counter++;
+
+        if (counter > 55) {
+            clearInterval(interval);
+            startAttack();
+        }
+
+    }, 100);
+
+}
+
+function startAttack() {
+
+    intro.style.display = "none";
+    terminal.style.display = "none";
+    attack.style.display = "block";
+
+    let progress = 0;
+
+    const interval = setInterval(() => {
+
+        progress += Math.floor(Math.random() * 7) + 1;
+
+        if (progress >= 100) {
+            progress = 100;
+        }
+
+        bar.style.width = progress + "%";
+        percent.textContent = progress + "%";
+
+        if (progress === 100) {
+
+            clearInterval(interval);
+
+            setTimeout(() => {
+
+                document.body.classList.add("shake");
+
+                setTimeout(() => {
+
+                    document.body.classList.remove("shake");
+
+                    attack.style.display = "none";
+                    final.style.display = "flex";
+
+                }, 1200);
+
+            }, 1000);
+        }
+
+    }, 120);
+
+}
+
+setTimeout(() => {
+    document.getElementById("loading").textContent =
+        "Connecting to security server...";
+}, 1500);
+
+setTimeout(() => {
+    terminalAnimation();
+}, 3000);
+
+</script>
+<div id="startScreen" style="
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #00ff66;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+">
+
+    <div style="
+        font-size: clamp(25px, 7vw, 55px);
+        margin-bottom: 30px;
+        color: #ff2020;
+    ">
+        ⚠ SYSTEM LOCKED ⚠
+    </div>
+
+    <button onclick="startPrank()" style="
+        background: #000;
+        color: #00ff66;
+        border: 2px solid #00ff66;
+        padding: 18px 35px;
+        font-size: 20px;
+        font-family: 'Courier New', monospace;
+        cursor: pointer;
+        border-radius: 5px;
+    ">
+        ▶ SİSTEMİ BAŞLAT
+    </button>
+
+    <p style="color:#888; margin-top:20px;">
+        Security initialization required...
+    </p>
+
+</div>
+
+<script>
+
+let audioContext;
+let soundInterval;
+
+function beep(frequency, duration, volume = 0.025) {
+const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = "sawtooth";
+    oscillator.frequency.value = frequency;
+
+    gain.gain.value = volume;
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start();
+
+    oscillator.frequency.exponentialRampToValueAtTime(
+        frequency * 0.55,
+        audioContext.currentTime + duration / 1000
+    );
+
+    setTimeout(() => {
+        oscillator.stop();
+    }, duration);
+}
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = "sawtooth";
+    oscillator.frequency.value = frequency;
+
+    gain.gain.value = volume;
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start();
+
+    setTimeout(() => {
+        oscillator.stop();
+    }, duration);
+}
+
+
+function startPrank() {
+
+    // Ses sistemini başlat
+    audioContext = new (
+        window.AudioContext ||
+        window.webkitAudioContext
+    )();
+
+    audioContext.resume();
+
+    // Başlangıç sesi
+    beep(500, 120, 0.04);
+
+    setTimeout(() => beep(750, 120, 0.04), 180);
+    setTimeout(() => beep(1000, 180, 0.04), 360);
+
+    // Başlat ekranını kaldır
+    document.getElementById("startScreen").style.display = "none";
+
+    // Kod akışı sesi
+    soundInterval = setInterval(() => {
+
+        const frequency =
+            Math.floor(Math.random() * 600) + 250;
+
+        beep(frequency, 35, 0.012);
+
+    }, 180);
+
+    // 18 saniye sonra kod sesini kapat
+    setTimeout(() => {
+        clearInterval(soundInterval);
+    }, 18000);
+
+    // Tarama sesi
+    setTimeout(() => {
+        beep(900, 100, 0.035);
+    }, 4000);
+
+    setTimeout(() => {
+        beep(650, 100, 0.035);
+    }, 5000);
+
+    setTimeout(() => {
+        beep(1000, 150, 0.04);
+    }, 6000);
+}
+
+</script>
+</body>
+</html>
